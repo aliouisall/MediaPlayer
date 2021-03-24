@@ -2,15 +2,18 @@ html,body{
   padding: 0;
   margin: 0;
 }
-body{
-  background: url(images/background.jpg);
+body {
+    background: url(images/background.jpg) #050505;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-position-y: inherit;
 }
-#img_track{
-  background-image: url(images/icon.png);
-  height: 300px;
-  width: 300px;
-  background-size: cover;
-  background-repeat: no-repeat;
+#img_track {
+    background-image: url(images/icon.png);
+    min-height: 266px;
+    width: initial;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .container {
     margin-top: 40px;
@@ -19,6 +22,7 @@ body{
     opacity: 0.8;
     padding: 0;
     padding-bottom: 12px;
+    max-width: 1140px;
 }
 .input-group {
     padding: 0 12px;
@@ -27,5 +31,34 @@ body{
   color:#fff;
 }
 input#search {
+    border-radius: 0;
+}
+audio::-webkit-media-controls-panel{
+  background-color: rgba(200,200,200,1);
+}
+audio{
+  background-color:#C8C8C8;
+  width: 100%;
+}
+div#title {
+    font-size: 38px;
+    text-align: left;
+    padding: 0px 100px;
+    padding-top: 40px;
+    color: #fff;
+}
+div#artist {
+    font-size: 20px;
+    text-align: left;
+    padding: 0 100px;
+    padding-bottom: 84.5px;
+    color: #000;
+}
+.player{
+  height: 54px;
+}
+#search_btn{
+  background: #535869;
+    color: #fff;
     border-radius: 0;
 }

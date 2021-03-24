@@ -14,19 +14,25 @@
 <body>
 	<div class="container">
 		<div class="row" id="row_audio">
-			<div class="col-lg-4">
+			<div class="col-lg-3" style="padding-right:0; ">
 		    	<div id="img_track"></div>
 		    </div>
-			<div class="col-lg-8">
+			<div class="col-lg-9" style="padding-left:0; ">
 				<div class="row">
 					<div id="title">
 			    		Title
 			    	</div>
+			    	<div id="artist">
+			    		Artiste
+			    	</div>
 				</div>
 				<div class="row">
-				    <audio controls autoplay muted>		    	
-						<source src="test.mp3" type="audio/mpeg">
-				    </audio>
+					<div class="player">
+						<audio controls>
+						    <source src="test.mp3" type="audio/mpeg">
+						     Your Browser Does Not Support Audio
+						 </audio>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -34,7 +40,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="search">
 				<div class="input-group-append">
-					<button class="btn" type="button" id="search">
+					<button class="btn" type="button" id="search_btn">
 						<i class="fa fa-search" aria-hidden="true"></i>
 					</button>
 				</div>
