@@ -35,29 +35,26 @@ function escapeHtml(str)
 }
 //
 function play_music(index){
-    title.innerText = data_music["chemin"+(index-1)];
-    artist.innerText = data_music["chemin"+(index-1)];
+    music = data_music[index];
+    title.innerText = music["title"];
+    artist.innerText = music["artist"];
 
     var audio = document.getElementById('audio');
     var source = document.getElementById('audioSource');
-    source.src = data_music["chemin"+(index-1)];
+    source.src = music["path"];
 
     audio.load(); //call this to just preload the audio without playing
     audio.play(); //call this to play the song right away
 }
 //
 function read_music(){
-    var index = 1; 
-    for (var key in data_music) {
-        table_body.innerHTML += '<tr onclick="play_music('+index+')"><th scope="row">'+index+'</th><td>'+escapeHtml(data_music[key])+'</td><td>'+escapeHtml(data_music[key])+'</td><td>'+escapeHtml(data_music[key])+'</td></tr>';
-        index++;
+    for (var i=0; i<data_music.length; i++) {
+        table_body.innerHTML += '<tr onclick="play_music('+i+')"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
     }
 }
 // this requests the file and executes a callback with the parsed result once
 fetchJSONFile('playlist.json', function(data){
     data_music = data;
     read_music();
-    console.log(data);
 });
-
 

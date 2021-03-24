@@ -38,6 +38,7 @@ audio::-webkit-media-controls-panel{
 audio{
   background-color:#e6e6e6;
   width: 100%;
+  outline: 0;
 }
 div#title {
     font-size: 38px;
