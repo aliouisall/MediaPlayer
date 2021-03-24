@@ -21,7 +21,6 @@ body {
     color: #fff;
     opacity: 0.8;
     padding: 0;
-    padding-bottom: 12px;
     max-width: 1140px;
 }
 .input-group {
@@ -64,4 +63,7 @@ div#artist {
 }
 table#other_titles tr {
     cursor: pointer;
+}
+table#other_titles tr:hover {
+    background: #100f0f;
 }
