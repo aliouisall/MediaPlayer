@@ -8,52 +8,62 @@
 	<!-- CSS/JS -->
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="Server.js"></script>
-
+	<script type="text/javascript" src="script.js"></script>
+	<script src="https://use.fontawesome.com/9c576626a0.js"></script>
 </head>
 <body>
-	<div clas="container">
-		<div class="row">
-			<div class="col-lg-1"> 
-				<section id="d1">
-				    <p class="b">
-				    	<a class="t">Player</a>
-				    </p>
-				    <p id="nom_musique">
-				    	nom de la musique
-				    </p>
-				    <p id="aud">
-				       Audio
-				    </p>
-				    <a id="au"></a>
-				</section>
-			</div>
-			<div class="col-lg-2">
-				<section id="d2">
-				    <p class="b2">
-				    	<a class="t2">Playlist</a>
-				    </p>
-				    <p id="Playlist"><p>
-				    <table id="playlist_table"></table>
-				    <button id="remove" onclick="Remove()">
-				    	Remove
-				 	</button>    
-			  	</section>
-			</div>
+	<div class="container">
+		<div class="row" id="row_audio">
 			<div class="col-lg-4">
-				<section id="d4">
-					<p class="b4">
-						<a class="t4">Selection</a>
-					</p>
-				    <table id="tab">
-				          <th>
-				          	<button id="but_list" onclick="getdata()">
-				          		Liste de tous les morceaux et les vidéos
-				          	</button>
-				          </th>   
-				    </table>  
-				</section>
+		    	<div id="img_track"></div>
+		    </div>
+			<div class="col-lg-8">
+				<div class="row">
+					<div id="title">
+			    		Title
+			    	</div>
+				</div>
+				<div class="row">
+				    <audio controls autoplay muted>		    	
+						<source src="text.mp3" type="audio/mpeg">
+				    </audio>
+				</div>
 			</div>
 		</div>
+		<div class="row" id="row_search">
+			<div class="input-group">
+				<input type="text" class="form-control" id="search">
+				<div class="input-group-append">
+					<button class="btn" type="button" id="search">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<table class="table" id="other_titles">
+			<thead>
+				<tr>
+					<th class="col-sm-1">#</th>
+					<th class="col-sm-2">Artist</th>
+					<th class="col-sm-8">Title</th>
+					<th class="col-sm-1">Time</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<th scope="row">1</th>
+					<td>Mark</td>
+					<td>Otto</td>
+					<td>Otto</td>
+				</tr>
+				<tr>
+					<th scope="row">2</th>
+					<td>Jacob</td>
+					<td>Jacob</td>
+					<td>Thornton</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

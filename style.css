@@ -1,0 +1,28 @@
+html,body{
+  padding: 0;
+  margin: 0;
+}
+body{
+  background: url(images/background.jpg);
+}
+#img_track{
+  background-image: url(images/icon.png);
+  height: 300px;
+  width: 300px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.container {
+    margin-top: 40px;
+    background: rgb(169 169 169 / 80%);
+    color: #fff;
+    opacity: 0.8;
+    padding-top: 15px;
+    padding-bottom: 12px;
+}
+.input-group{
+  padding: 0;
+}
+#other_titles{
+  color:#fff;
+}
