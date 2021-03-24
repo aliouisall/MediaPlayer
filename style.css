@@ -17,12 +17,15 @@ body{
     background: rgb(169 169 169 / 80%);
     color: #fff;
     opacity: 0.8;
-    padding-top: 15px;
+    padding: 0;
     padding-bottom: 12px;
 }
-.input-group{
-  padding: 0;
+.input-group {
+    padding: 0 12px;
 }
 #other_titles{
   color:#fff;
+}
+input#search {
+    border-radius: 0;
 }
