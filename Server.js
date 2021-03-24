@@ -13,6 +13,17 @@ function extpath(dir){
         return ch
     }
 
+
+
+
+//
+app.use(express.static(__dirname + '/'));
+
+app.get('/', function(req, res, next){
+  res.render('./index.html');
+});
+
+
 // Création du port d'ecoute de notre serveur
 app.listen(8080, function(){
     console.log(' server running ')
