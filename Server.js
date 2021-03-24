@@ -12,3 +12,8 @@ function extpath(dir){
     }
         return ch
     }
+
+// Création du port d'ecoute de notre serveur
+app.listen(8080, function(){
+    console.log(' server running ')
+})
