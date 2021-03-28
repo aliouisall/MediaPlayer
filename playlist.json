@@ -1,7 +1,7 @@
 [
-{"type":"audio","artist":"test_artist","title":"test_title","path":"test.mp3","time":"50","cover":""},
-{"type":"audio","artist":"test2_artist","title":"test2_title","path":"test2.mp3","time":"50","cover":""},
-{"type":"audio","artist":"test3_artist","title":"test3_title","path":"test3.mp3","time":"50","cover":""},
-{"type":"audio","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""},
-{"type":"video","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""}
+    {"type":"audio","artist":"Black M","title":"Sur Ma Route","path":"songs/Black M - Sur ma Route.mp3","time":"50","cover":""},
+    {"type":"audio","artist":"test2_artist","title":"test2_title","path":"test2.mp3","time":"50","cover":""},
+    {"type":"audio","artist":"test3_artist","title":"test3_title","path":"test3.mp3","time":"50","cover":""},
+    {"type":"audio","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""},
+    {"type":"video","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""}
 ]
