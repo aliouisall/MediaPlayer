@@ -3,7 +3,8 @@ var app = express();
 var fs = require('fs');
 var path = require('path');
 
-// Extraction du nom d'un fichier. On élémine toutes les \ avant le nom fu fichier. 
+// Extraction du nom d'un fichier. On élémine toutes les \ avant le nom fu fichier
+
 function extpath(dir){
     var i = dir.lastIndexOf('\\');
     var ch = ''
@@ -13,7 +14,9 @@ function extpath(dir){
         return ch
     }
 
-// Extraction des videos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
+
+// Extraction des vidéos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
+
 var j=0;
 var fil = {};
 var chemin = "";
@@ -21,48 +24,51 @@ function crawl(dir){
 
 	var files = fs.readdirSync(dir);
 
-	try{
-	for(var x in files){
-			
-		var next = path.join(dir,files[x]);
+	try {
+
+        for (var x in files) {
+                
+            var next = path.join(dir,files[x]);
+            
+            if (fs.lstatSync(next).isDirectory()==true) {
+
+                crawl(next);
+
+            }
+
+            else {
+                
+                var ext = next[next.length-3]+ next[next.length-2] + next[next.length-1];
+
+                if (ext=='mp3' || ext=="mp4") {
+                
+                chemin ="chemin"+j;
+                fil[chemin] = extpath(next);
+                
+                j+=1;
+                
+                }
+
+            }
 		
-		
-		if (fs.lstatSync(next).isDirectory()==true){
+        }
+    }
 
-			crawl(next);
+    catch (error) {
 
-			
-			
-		}
-		else {
-			var ext = next[next.length-3]+ next[next.length-2] + next[next.length-1];
+        console.log(error);
 
-			if(ext=='mp3' || ext=="mp4"){
-			
-			chemin ="chemin"+j;
-			fil[chemin] = extpath(next);
-			
-			j+=1;
-			
-		}
+    }
 
-		}
-		
-	
-}
-}
-		catch(error){
-			console.log(error);
-		}
-
-let donnees = JSON.stringify(fil);
-fs.writeFile('./public/playlist.json', donnees, function(erreur) {
-    if (erreur) {
-        console.log(erreur)}
-});
+    let donnees = JSON.stringify(fil);
+//     fs.writeFile('playlist.json', donnees, function(erreur) {
+//         if (erreur) {
+//             console.log(erreur)}
+//         }
+// );
 
 
-console.log(fil);
+// console.log(fil);
 
 }
 
