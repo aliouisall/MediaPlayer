@@ -1,6 +1,6 @@
 [
     {"type":"audio","artist":"Black M","title":"Sur Ma Route","path":"songs/Black M - Sur ma Route.mp3","time":"50","cover":""},
-    {"type":"audio","artist":"Sexion d'assaut","title":"Beautiful girls","path":"songs/Sean Kingston - Beautiful Girls.mp3","time":"50","cover":""},
+    {"type":"audio","artist":"Sean Kingston","title":"Beautiful girls","path":"songs/Sean Kingston - Beautiful Girls.mp3","time":"50","cover":""},
     {"type":"audio","artist":"Sexion d'assaut","title":"Ra-fall","path":"songs/Sexion d'Assaut - Ra-Fall.mp3","time":"50","cover":""},
     {"type":"audio","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""},
     {"type":"video","artist":"test4_artist","title":"test4_title","path":"test4.mp3","time":"50","cover":""}
