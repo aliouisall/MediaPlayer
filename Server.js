@@ -55,6 +55,21 @@ function crawl(dir){
 			console.log(error);
 		}
 
+let donnees = JSON.stringify(fil);
+fs.writeFile('./public/playlist.json', donnees, function(erreur) {
+    if (erreur) {
+        console.log(erreur)}
+});
+
+
+console.log(fil);
+
+}
+
+dir = __dirname;
+crawl(dir);
+
+// Accès au dossier public et affichage du contenu de index.html
 
 app.use(express.static(__dirname + '/'));
 
