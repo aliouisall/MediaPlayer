@@ -55,6 +55,7 @@ function read_music(){
 // this requests the file and executes a callback with the parsed result once
 fetchJSONFile('playlist.json', function(data){
     data_music = data;
+    play_music(0);
     read_music();
 });
 

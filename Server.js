@@ -1,7 +1,10 @@
-var express = require('express');
+var express = require('express'); // npm install express
 var app = express();
 var fs = require('fs');
 var path = require('path');
+var jsmediatags = require('jsmediatags') // npm install jsmediatags --save   // https://github.com/aadsm/JavaScript-ID3-Reader
+getMP3Duration = require('get-mp3-duration') // npm install --save get-mp3-duration
+
 
 // Extraction du nom d'un fichier. On élémine toutes les \ avant le nom fu fichier
 
@@ -13,13 +16,18 @@ function extpath(dir){
     }
         return ch
     }
-
+// Converting milliseconds to minutes and seconds
+function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
 
 // Extraction des vidéos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
 
 var j=0;
-var fil = {};
-var chemin = "";
+var fil = [];
+var chemin_music = "/songs/";
 function crawl(dir){
 
 	var files = fs.readdirSync(dir);
@@ -35,17 +43,37 @@ function crawl(dir){
                 crawl(next);
 
             }
-
             else {
                 
-                var ext = next[next.length-3]+ next[next.length-2] + next[next.length-1];
+                var ext = path.extname(next); // extension of the file
+                file_name = path.parse(next).name; // name of the file without extension
+                file = path.parse(next).base // name + extension
 
-                if (ext=='mp3' || ext=="mp4") {
-                
-                chemin ="chemin"+j;
-                fil[chemin] = extpath(next);
-                
-                j+=1;
+                path_name_split = file_name.split(" - ");
+
+                if (ext=='.mp3'){
+
+                    artist = path_name_split[0];
+                    title = path_name_split[1];
+                    type = "audio";
+                    cover = "";
+
+                    jsmediatags.read(next, {
+                        onSuccess: function(tag) {
+                            artist = tag.tags.artist;
+                            title = tag.tags.title;
+                            console.log(tag.tags.artist);
+                            type = "audio";
+                            cover = "";
+                        }
+                    });
+                    buffer = fs.readFileSync(next)
+                    duration = getMP3Duration(buffer)
+                    
+
+                    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
+                    
+                    j+=1;
                 
                 }
 
@@ -61,18 +89,16 @@ function crawl(dir){
     }
 
     let donnees = JSON.stringify(fil);
-//     fs.writeFile('playlist.json', donnees, function(erreur) {
-//         if (erreur) {
-//             console.log(erreur)}
-//         }
-// );
+    fs.writeFile('playlist.json', donnees, function(erreur) {
+        if (erreur) {
+            console.log(erreur)}
+        }
+    );
 
-
-// console.log(fil);
-
+    //console.log(fil);
 }
 
-dir = __dirname;
+dir = __dirname + chemin_music;
 crawl(dir);
 
 // Accès au dossier public et affichage du contenu de index.html
