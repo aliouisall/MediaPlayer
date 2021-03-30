@@ -40,19 +40,21 @@
 				<input type="text" class="form-control" id="search" onkeyup="search()" placeholder="search">
 			</div>
 		</div>
-		<table class="table" id="other_titles">
-			<thead>
-				<tr>
-					<th class="col-sm-1">#</th>
-					<th class="col-sm-2">Artist</th>
-					<th class="col-sm-8">Title</th>
-					<th class="col-sm-1">Time</th>
-				</tr>
-			</thead>
-			<tbody id="table_body">
-				<!-- ICI on ajoute les fichiers trouvés par le serveur -->
-			</tbody>
-		</table>
+		<div id="other_titles">
+			<table class="table" >
+				<thead>
+					<tr>
+						<th class="col-sm-1">#</th>
+						<th class="col-sm-2">Artist</th>
+						<th class="col-sm-8">Title</th>
+						<th class="col-sm-1">Time</th>
+					</tr>
+				</thead>
+				<tbody id="table_body">
+					<!-- ICI on ajoute les fichiers trouvés par le serveur -->
+				</tbody>
+			</table>
+		</div>
 		<div id="drop-area">
 			<form class="my-form" method="post" enctype="multipart/form-data">
 				<p>

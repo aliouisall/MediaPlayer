@@ -32,6 +32,9 @@ body {
   overflow-y: scroll;
   display: block;
 }
+.table{
+  color:#fff;
+}
 input#search {
     border-radius: 0;
 }
