@@ -23,11 +23,77 @@ function millisToMinutesAndSeconds(millis) {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
-// Extraction des vidéos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
+// Function to show cover from mp3 file
+function image_from_arr(picture){
+    try {
+        var base64String = "";
+        for (var i = 0; i < picture.data.length; i++) {
+            base64String += String.fromCharCode(picture.data[i]);
+        }
+        var dataUrl = "data:" + picture.format + ";base64," + Buffer.from(base64String, 'binary').toString('base64');
+        return dataUrl;
+        //return dataUrl;
+    }catch (error) {
+        return "images/icon.png"
+    }
+}
 
-var j=0;
+// Some global variables
 var fil = [];
 var chemin_music = "/songs/";
+//function to get tags from mp3 file
+function get_tags(next, type, duration, callback){
+    jsmediatags.read(next, {
+        onSuccess: function(tag) {
+            callback(next, type, tag.tags.artist, tag.tags.title, tag.tags.picture, duration);
+        },
+        onError: function(error) {
+          console.log(':(', error.type, error.info);
+        }
+
+    });
+}
+// convet ms to minutes:secondes
+function ms_to_minutes(ms){
+    var minutes = Math.floor(ms / 60000);
+    var seconds = ((ms % 60000) / 1000).toFixed(0);
+    var duration_ = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    return duration_
+}
+// fill list and write in JSON file
+function push_to_fil(next, type, artist, title, picture, duration){
+    file_name = path.parse(next).name; // name of the file without extension
+    file = path.parse(next).base // name + extension
+    path_name_split = file_name.split(" - ");
+
+    if(artist == undefined){
+        artist = path_name_split[0];
+    }
+    if(title == undefined){
+        title = path_name_split[1];
+    }
+
+
+    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)});
+    write_JSON();
+}
+
+function write_JSON(){
+    let donnees = JSON.stringify(fil);
+    fs.writeFile('playlist.json', '', function(erreur) {
+        if (erreur) {
+            console.log(erreur)}
+        }
+    );
+    fs.writeFile('playlist.json', donnees, function(erreur) {
+        if (erreur) {
+            console.log(erreur)}
+        }
+    );
+}
+
+// Extraction des vidéos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
+
 function crawl(dir){
 
 	var files = fs.readdirSync(dir);
@@ -44,7 +110,6 @@ function crawl(dir){
 
             }
             else {
-                
                 var ext = path.extname(next); // extension of the file
                 file_name = path.parse(next).name; // name of the file without extension
                 file = path.parse(next).base // name + extension
@@ -52,29 +117,9 @@ function crawl(dir){
                 path_name_split = file_name.split(" - ");
 
                 if (ext=='.mp3'){
-
-                    artist = path_name_split[0];
-                    title = path_name_split[1];
-                    type = "audio";
-                    cover = "";
-
-                    jsmediatags.read(next, {
-                        onSuccess: function(tag) {
-                            artist = tag.tags.artist;
-                            title = tag.tags.title;
-                            console.log(tag.tags.artist);
-                            type = "audio";
-                            cover = "";
-                        }
-                    });
                     buffer = fs.readFileSync(next)
-                    duration = getMP3Duration(buffer)
-                    
-
-                    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
-                    
-                    j+=1;
-                
+                    duration = getMP3Duration(buffer)                    
+                    get_tags(next, "audio", duration, push_to_fil);
                 }
 
             }
@@ -88,18 +133,20 @@ function crawl(dir){
 
     }
 
-    let donnees = JSON.stringify(fil);
-    fs.writeFile('playlist.json', donnees, function(erreur) {
-        if (erreur) {
-            console.log(erreur)}
-        }
-    );
+    
 
     //console.log(fil);
 }
 
 dir = __dirname + chemin_music;
 crawl(dir);
+
+// function returns information about the file
+function fetch_info(tag,fil){
+    artist = tag.tags.artist;
+    title = tag.tags.title;
+    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
+}
 
 // Accès au dossier public et affichage du contenu de index.html
 
