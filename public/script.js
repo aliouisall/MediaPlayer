@@ -37,11 +37,20 @@ function escapeHtml(str)
     return str.replace(/[&<>"']/g, function(m) {return map[m];});
 }
 //
-function play_music(index){
+function play_music(index,elem){
     music = data_music[index];
     title.innerText = music["title"];
     artist.innerText = music["artist"];
     image.style.backgroundImage = "url("+music["cover"]+")"
+
+    if(elem){
+      var alltr = document.getElementsByTagName("tr");
+      for (var i = 0; i<alltr.length; i++) {
+          alltr[i].style.background = "none";
+      }
+      elem.style.background = "#100f0f";
+    }
+
     var audio = document.getElementById('audio');
     var source = document.getElementById('audioSource');
     source.src = music["path"];
@@ -50,9 +59,13 @@ function play_music(index){
     audio.play(); //call this to play the song right away
 }
 //
+function onrepeat(i){
+  elem.loop = true;
+}
+//
 function read_music(){
     for (var i=0; i<data_music.length; i++) {
-        table_body.innerHTML += '<tr onclick="play_music('+i+')"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
+        table_body.innerHTML += '<tr onclick="play_music('+i+',this)" id="tr'+i+'"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
     }
 }
 // this requests the file and executes a callback with the parsed result once
