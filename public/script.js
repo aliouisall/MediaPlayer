@@ -67,7 +67,7 @@ fetchJSONFile('playlist.json', function(data){
 //
 function validateFile(files){
   const allowedExtensions =  ["mp3"],
-        sizeLimit = 20000000; // 1 megabyte
+        sizeLimit = 20000000; // 20 megabytes
   for (var i = 0; i < files.length ; i++) {
     const { name:fileName, size:fileSize } = files[i];
     const fileExtension = fileName.split(".").pop();
@@ -136,9 +136,9 @@ function uploadFile(file, i) {
   xhr.addEventListener(
     "readystatechange",
     function(resp) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        // Upload correct
-      } else if (xhr.readyState == 4 && xhr.status != 200) {
+      if (xhr.status == 200) {
+        console.log("done");
+      } else{
         let formError = document.getElementById("formError");
         formError.innerHTML = "Une erreur s'est produite lors de l'importation";
         formError.style.visibility = "visible";

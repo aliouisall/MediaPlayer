@@ -68,10 +68,10 @@ div#artist {
     color: #fff;
     border-radius: 0;
 }
-table#other_titles tr {
+#other_titles tr {
     cursor: pointer;
 }
-table#other_titles tr:hover {
+#other_titles tr:hover {
     background: #100f0f;
 }
 
@@ -141,4 +141,11 @@ display: none;
 }
 .table{
   margin-bottom: -1px;
+}
+
+@media only screen and (max-width: 991px){
+  #img_track{
+    background-size: contain;
+    background-position: bottom;
+  }
 }
