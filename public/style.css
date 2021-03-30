@@ -72,10 +72,12 @@ div#artist {
     cursor: pointer;
 }
 #other_titles tr:hover {
-    background: #100f0f;
+    background: #100f0f !important;
 }
 
-
+i.fa.fa-refresh:hover {
+    color: #00c546;
+}
 
 
 

@@ -3,6 +3,8 @@ var data_video;
 var title = document.getElementById("title");
 var artist = document.getElementById("artist");
 var image = document.getElementById("img_track");
+var audio = document.getElementById('audio');
+var source = document.getElementById('audioSource');
 
 //function returns the file without the extension
 function extract_name(path){
@@ -38,34 +40,49 @@ function escapeHtml(str)
 }
 //
 function play_music(index,elem){
+    audio.loop = false;
     music = data_music[index];
     title.innerText = music["title"];
     artist.innerText = music["artist"];
     image.style.backgroundImage = "url("+music["cover"]+")"
+    
 
     if(elem){
       var alltr = document.getElementsByTagName("tr");
+      var ref = document.getElementsByClassName("fa-refresh");
+      for (var i = 0; i < ref.length; i++) {
+        ref[i].style.color = '#fff';
+      }
       for (var i = 0; i<alltr.length; i++) {
           alltr[i].style.background = "none";
       }
       elem.style.background = "#100f0f";
     }
 
-    var audio = document.getElementById('audio');
-    var source = document.getElementById('audioSource');
     source.src = music["path"];
 
     audio.load(); //call this to just preload the audio without playing
     audio.play(); //call this to play the song right away
 }
 //
-function onrepeat(i){
-  elem.loop = true;
+function onrepeat(ele){
+  
+
+  if(!audio.loop){
+    audio.loop = true;
+    ele.style.color = "#00c546";
+  }else if(audio.loop == true){
+    ele.style.color = "#fff";
+    audio.loop = false;
+  }else{
+    audio.loop = true;
+    ele.style.color = "#00c546";
+  }
 }
 //
 function read_music(){
     for (var i=0; i<data_music.length; i++) {
-        table_body.innerHTML += '<tr onclick="play_music('+i+',this)" id="tr'+i+'"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
+        table_body.innerHTML += '<tr onclick="play_music('+i+',this)" id="tr'+i+'"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td><i class="fa fa-refresh" aria-hidden="true" onclick="event.stopPropagation();onrepeat(this);"></i></td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
     }
 }
 // this requests the file and executes a callback with the parsed result once
