@@ -109,6 +109,11 @@ app.get('/', function(req, res, next){
   res.render('./index.html');
 });
 
+app.post("/", function(req, res){
+    if (req.files){
+        console.log(req.files)
+    }
+})
 
 // Création du port d'ecoute de notre serveur
 app.listen(8080, function(){
