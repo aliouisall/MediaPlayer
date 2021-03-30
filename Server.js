@@ -24,27 +24,28 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 // Function to show cover from mp3 file
-function show_image_from_arr(){
-    var base64String = "";
-    for (var i = 0; i < image.data.length; i++) {
-        base64String += String.fromCharCode(image.data[i]);
+function image_from_arr(picture){
+    try {
+        var base64String = "";
+        for (var i = 0; i < picture.data.length; i++) {
+            base64String += String.fromCharCode(picture.data[i]);
+        }
+        var dataUrl = "data:" + picture.format + ";base64," + Buffer.from(base64String, 'binary').toString('base64');
+        return dataUrl;
+        //return dataUrl;
+    }catch (error) {
+        return "images/icon.png"
     }
-    var dataUrl = "data:" + image.format + ";base64," + window.btoa(base64String);
 }
 
-//
+// Some global variables
 var fil = [];
-var artist = "";
-var title = "";
-//var type = "";
-var cover = "";
 var chemin_music = "/songs/";
-var file = "";
-//function to 
+//function to get tags from mp3 file
 function get_tags(next, type, duration, callback){
     jsmediatags.read(next, {
         onSuccess: function(tag) {
-            callback(next, type, tag.tags.artist, tag.tags.title, duration);
+            callback(next, type, tag.tags.artist, tag.tags.title, tag.tags.picture, duration);
         },
         onError: function(error) {
           console.log(':(', error.type, error.info);
@@ -52,8 +53,15 @@ function get_tags(next, type, duration, callback){
 
     });
 }
-//
-function push_to_fil(next, type, artist, title, duration){
+// convet ms to minutes:secondes
+function ms_to_minutes(ms){
+    var minutes = Math.floor(ms / 60000);
+    var seconds = ((ms % 60000) / 1000).toFixed(0);
+    var duration_ = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    return duration_
+}
+// fill list and write in JSON file
+function push_to_fil(next, type, artist, title, picture, duration){
     file_name = path.parse(next).name; // name of the file without extension
     file = path.parse(next).base // name + extension
     path_name_split = file_name.split(" - ");
@@ -65,11 +73,8 @@ function push_to_fil(next, type, artist, title, duration){
         title = path_name_split[1];
     }
 
-    var minutes = Math.floor(duration / 60000);
-    var seconds = ((duration % 60000) / 1000).toFixed(0);
-    duration_ = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 
-    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":duration_,"cover":""});
+    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)});
     write_JSON();
 }
 

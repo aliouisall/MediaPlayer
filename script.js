@@ -2,6 +2,7 @@ var data_music;
 var data_video;
 var title = document.getElementById("title");
 var artist = document.getElementById("artist");
+var image = document.getElementById("img_track");
 
 //function returns the file without the extension
 function extract_name(path){
@@ -38,10 +39,9 @@ function escapeHtml(str)
 //
 function play_music(index){
     music = data_music[index];
-    console.log(music);
     title.innerText = music["title"];
     artist.innerText = music["artist"];
-
+    image.style.backgroundImage = "url("+music["cover"]+")"
     var audio = document.getElementById('audio');
     var source = document.getElementById('audioSource');
     source.src = music["path"];
