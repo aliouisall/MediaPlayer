@@ -163,6 +163,7 @@ app.post('/', function (req, res){
 
     form.on('file', function (name, file){
         console.log('Uploaded ' + file.name);
+        fil = [];
         crawl(dir);
     });
 
