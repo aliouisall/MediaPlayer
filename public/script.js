@@ -1,3 +1,4 @@
+// some global variables
 var data_music;
 var data_video;
 var title = document.getElementById("title");
@@ -6,11 +7,9 @@ var image = document.getElementById("img_track");
 var audio = document.getElementById('audio');
 var source = document.getElementById('audioSource');
 var index_current = 0;
-//function returns the file without the extension
-function extract_name(path){
-  return path.split('.').slice(0, -1).join('.');
-}
-//
+
+
+//function to read JSON file with callback
 function fetchJSONFile(path, callback) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
@@ -25,7 +24,7 @@ function fetchJSONFile(path, callback) {
     httpRequest.send(); 
 }
 
-//
+//similar to htmlspecialentities in php (prevent XSS attacks)
 function escapeHtml(str)
 {
     var map =
@@ -38,7 +37,8 @@ function escapeHtml(str)
     };
     return str.replace(/[&<>"']/g, function(m) {return map[m];});
 }
-//
+
+//function to play song from index, this func changes the background of <tr>
 function play_music(index,elem){
     index_current = index;
     audio.loop = false;
@@ -62,10 +62,10 @@ function play_music(index,elem){
 
     source.src = music["path"];
 
-    audio.load(); //call this to just preload the audio without playing
-    audio.play(); //call this to play the song right away
+    audio.load(); //to just preload the audio without playing
 }
-//
+
+// function to activate repeat feature
 function onrepeat(ele){
   if(!audio.loop){
     audio.loop = true;
@@ -78,12 +78,14 @@ function onrepeat(ele){
     ele.style.color = "#00c546";
   }
 }
-//
+
+// function creating tr of songs in html
 function read_music(){
     for (var i=0; i<data_music.length; i++) {
         table_body.innerHTML += '<tr onclick="play_music('+i+',this)" id="tr'+i+'"><th scope="row">'+(i+1)+'</th><td>'+escapeHtml(data_music[i].artist)+'</td><td>'+escapeHtml(data_music[i].title)+'</td><td><i class="fa fa-refresh" aria-hidden="true" onclick="event.stopPropagation();onrepeat(this);"></i></td><td>'+escapeHtml(data_music[i].time)+'</td></tr>';
     }
 }
+
 // this requests the file and executes a callback with the parsed result once
 fetchJSONFile('playlist.json', function(data){
     data_music = data;
@@ -92,7 +94,7 @@ fetchJSONFile('playlist.json', function(data){
     play_music(0,first_tr);
 });
 
-//
+// EventListener of the end of a song in the audio player
 audio.addEventListener('ended',function(){
   if(audio.loop!=true){
     var next_tr = document.getElementById("tr"+(index_current+1));
@@ -105,7 +107,7 @@ audio.addEventListener('ended',function(){
   }
 });
 
-//
+//check if file is less tha 20MB and its extension is mp3 
 function validateFile(files){
   const allowedExtensions =  ["mp3"],
         sizeLimit = 20000000; // 20 megabytes
@@ -123,6 +125,7 @@ function validateFile(files){
   }
   return true;
 }
+
 //
 let filesDone = 0;
 let filesToDo = 0;
@@ -171,14 +174,18 @@ function uploadFile(file, i) {
   xhr.open("POST", url, true);
 
   xhr.upload.addEventListener("progress", e => {
-    updateProgress(i, (e.loaded * 100.0 / e.total) || 100);
+    var prog = (e.loaded * 100.0 / e.total) || 100;
+    updateProgress(i, prog);
+    if(prog == 100){
+        console.log("done");
+        location.reload();
+    }
   });
 
   xhr.addEventListener(
     "readystatechange",
     function(resp) {
       if (xhr.status == 200) {
-        console.log("done");
       } else{
         let formError = document.getElementById("formError");
         formError.innerHTML = "Une erreur s'est produite lors de l'importation";
@@ -224,8 +231,7 @@ function updateProgress(fileNumber, percent){
   progressBar.value = total;
 }
 
-//
-
+// search songs in table
 function search() {
     var input, filter, table, tr, a, i, txtValue;
     input = document.getElementById("search");
