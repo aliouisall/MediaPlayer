@@ -68,16 +68,17 @@ fetchJSONFile('playlist.json', function(data){
 function validateFile(files){
   const allowedExtensions =  ["mp3"],
         sizeLimit = 20000000; // 1 megabyte
+  for (var i = 0; i < files.length ; i++) {
+    const { name:fileName, size:fileSize } = files[i];
+    const fileExtension = fileName.split(".").pop();
 
-  const { name:fileName, size:fileSize } = files[0];
-  const fileExtension = fileName.split(".").pop();
-
-  if(!allowedExtensions.includes(fileExtension)){
-    alert("le type du fichier n'est pas autorisé");
-    return false;
-  }else if(fileSize > sizeLimit){
-    alert("la taille du fichier dépasse 20MB!")
-    return false;
+    if(!allowedExtensions.includes(fileExtension)){
+      alert("le type de l'un des fichiers n'est pas autorisé");
+      return false;
+    }else if(fileSize > sizeLimit){
+      alert("la taille de l'un des fichiers dépasse 20MB!")
+      return false;
+    }
   }
   return true;
 }
