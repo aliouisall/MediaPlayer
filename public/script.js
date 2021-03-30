@@ -100,11 +100,11 @@ const handleFiles = files => {
   const filesArray = [...files];
   initializeProgress(filesArray.length);
   filesArray.forEach(uploadFile);
-  filesArray.forEach(previewFile);
 };
 
+
 const uploadFile = (file, i) => {
-  const url = "http://uploader.localhost/uploadMe.php";
+  const url = "../";
   let xhr = new XMLHttpRequest();
   let formData = new FormData();
 
@@ -144,15 +144,6 @@ const uploadFile = (file, i) => {
 
 dropArea.addEventListener("drop", handleDrop, false);
 
-const previewFile = file => {
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = () => {
-    let img = document.createElement("img");
-    img.src = reader.result;
-    document.getElementById("gallery").appendChild(img);
-  };
-};
 
 const initializeProgress = numFiles => {
   console.log("entra", numFiles);

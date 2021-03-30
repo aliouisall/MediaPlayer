@@ -150,6 +150,24 @@ app.get('/', function(req, res, next){
 });
 
 //
+var formidable = require('formidable'); //npm install formidable
+
+app.post('/', function (req, res){
+    var form = new formidable.IncomingForm();
+
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/public/songs/' + file.name;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+        crawl(dir);
+    });
+
+    res.status(200);
+});
 
 
 
