@@ -40,7 +40,7 @@ function image_from_arr(picture){
 
 // Some global variables
 var fil = [];
-var chemin_music = "/songs/";
+var chemin_music = "public/songs/";
 //function to get tags from mp3 file
 function get_tags(next, type, duration, callback){
     jsmediatags.read(next, {
@@ -74,18 +74,18 @@ function push_to_fil(next, type, artist, title, picture, duration){
     }
 
 
-    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)});
+    fil.push({"type":type,"artist":artist,"title":title,"path":"/songs/"+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)});
     write_JSON();
 }
 
 function write_JSON(){
     let donnees = JSON.stringify(fil);
-    fs.writeFile('playlist.json', '', function(erreur) {
+    fs.writeFile('./public/playlist.json', '', function(erreur) {
         if (erreur) {
             console.log(erreur)}
         }
     );
-    fs.writeFile('playlist.json', donnees, function(erreur) {
+    fs.writeFile('./public/playlist.json', donnees, function(erreur) {
         if (erreur) {
             console.log(erreur)}
         }
@@ -138,33 +138,20 @@ function crawl(dir){
     //console.log(fil);
 }
 
-dir = __dirname + chemin_music;
+dir = __dirname;
 crawl(dir);
 
 // Accès au dossier public et affichage du contenu de index.html
 
-app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res, next){
-  res.render('./index.html');
+    res.render('./public/index.html');
 });
 
-app.post("/", function(req, res){
-    if (req.files){
-        console.log(req.files)
-        var file = req.files.file
-        var filename = file.name
-        console.log(filename)
+//
 
-        file.mv('./songs/', filename, function(err){
-            if(err){
-                res.send(err)
-            } else {
-                res.send("File Uploaded")
-            }
-        })
-    }
-})
+
 
 // Création du port d'ecoute de notre serveur
 app.listen(8080, function(){

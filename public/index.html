@@ -11,10 +11,6 @@
 	<script src="https://use.fontawesome.com/9c576626a0.js"></script>
 </head>
 <body>
-	<form method = "post" enctype="multipart/form-data" action="/">
-		<input type="file" name="filename">
-		<input type="submit" value="upload">
-	</form>
 	<div class="container">
 		<div class="row" id="row_audio">
 			<div class="col-lg-3" style="padding-right:0; ">
@@ -62,6 +58,20 @@
 				<!-- ICI on ajoute les fichiers trouvés par le serveur -->
 			</tbody>
 		</table>
+		<div id="drop-area">
+			<form class="my-form" enctype="multipart/form-data">
+				<p>
+					Vous pouvez faire glisser et déposer plusieurs fichiers dans cette zone pour les télécharger.
+				</p>
+				<input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+				<label for="fileElem" class="button">
+				  Sélectionnez des fichiers
+				</label>
+				<progress id="progress-bar" max=100 value=0></progress>
+				<div id="gallery"></div>
+			</form>
+			<p id="formError"></p>
+		</div>
 	</div>
 </body>
 <script type="text/javascript" src="script.js"></script>
