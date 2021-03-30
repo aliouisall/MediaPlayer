@@ -5,7 +5,7 @@ var artist = document.getElementById("artist");
 var image = document.getElementById("img_track");
 var audio = document.getElementById('audio');
 var source = document.getElementById('audioSource');
-
+var index_current = 0;
 //function returns the file without the extension
 function extract_name(path){
   return path.split('.').slice(0, -1).join('.');
@@ -40,6 +40,7 @@ function escapeHtml(str)
 }
 //
 function play_music(index,elem){
+    index_current = index;
     audio.loop = false;
     music = data_music[index];
     title.innerText = music["title"];
@@ -66,8 +67,6 @@ function play_music(index,elem){
 }
 //
 function onrepeat(ele){
-  
-
   if(!audio.loop){
     audio.loop = true;
     ele.style.color = "#00c546";
@@ -88,11 +87,23 @@ function read_music(){
 // this requests the file and executes a callback with the parsed result once
 fetchJSONFile('playlist.json', function(data){
     data_music = data;
-    play_music(0);
     read_music();
+    var first_tr = document.getElementById("tr0");
+    play_music(0,first_tr);
 });
 
-
+//
+audio.addEventListener('ended',function(){
+  if(audio.loop!=true){
+    var next_tr = document.getElementById("tr"+(index_current+1));
+    var first_tr = document.getElementById("tr0");
+    if(next_tr){
+      play_music(index_current+1,next_tr);
+    }else{
+      play_music(0,first_tr);
+    }
+  }
+});
 
 //
 function validateFile(files){
