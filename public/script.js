@@ -114,10 +114,8 @@ function handleDrop(e){
 }
 
 function handleFiles(files){
-  console.log(files);
   if (validateFile(files)){
     const filesArray = [...files];
-    console.log(files);
     initializeProgress(filesArray.length);
     filesArray.forEach(uploadFile);
   }
