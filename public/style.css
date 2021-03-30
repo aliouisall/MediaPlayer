@@ -28,6 +28,9 @@ body {
 }
 #other_titles{
   color:#fff;
+  max-height: 400px;
+  overflow-y: scroll;
+  display: block;
 }
 input#search {
     border-radius: 0;

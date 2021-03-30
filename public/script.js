@@ -183,4 +183,24 @@ function updateProgress(fileNumber, percent){
   progressBar.value = total;
 }
 
+//
+
+function search() {
+    var input, filter, table, tr, a, i, txtValue;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("table_body");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td0 = tr[i].getElementsByTagName("td")[0];
+        td1 = tr[i].getElementsByTagName("td")[1];
+        
+        txtValue = td0.textContent + td1.textContent;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
 // TODO : PLAYLISTS + MP4
