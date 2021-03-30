@@ -159,6 +159,17 @@ app.get('/', function(req, res, next){
 app.post("/", function(req, res){
     if (req.files){
         console.log(req.files)
+        var file = req.files.file
+        var filename = file.name
+        console.log(filename)
+
+        file.mv('./songs/', filename, function(err){
+            if(err){
+                res.send(err)
+            } else {
+                res.send("File Uploaded")
+            }
+        })
     }
 })
 
