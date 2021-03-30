@@ -141,13 +141,6 @@ function crawl(dir){
 dir = __dirname + chemin_music;
 crawl(dir);
 
-// function returns information about the file
-function fetch_info(tag,fil){
-    artist = tag.tags.artist;
-    title = tag.tags.title;
-    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
-}
-
 // Accès au dossier public et affichage du contenu de index.html
 
 app.use(express.static(__dirname + '/'));

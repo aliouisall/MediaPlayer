@@ -62,3 +62,6 @@ fetchJSONFile('playlist.json', function(data){
     read_music();
 });
 
+
+
+// TODO : PLAYLISTS + MP4
