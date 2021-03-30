@@ -65,7 +65,23 @@ fetchJSONFile('playlist.json', function(data){
 
 
 //
+function validateFile(files){
+  const allowedExtensions =  ["mp3"],
+        sizeLimit = 20000000; // 1 megabyte
 
+  const { name:fileName, size:fileSize } = files[0];
+  const fileExtension = fileName.split(".").pop();
+
+  if(!allowedExtensions.includes(fileExtension)){
+    alert("le type du fichier n'est pas autorisé");
+    return false;
+  }else if(fileSize > sizeLimit){
+    alert("la taille du fichier dépasse 20MB!")
+    return false;
+  }
+  return true;
+}
+//
 let filesDone = 0;
 let filesToDo = 0;
 let uploadProgress = [];
@@ -73,20 +89,20 @@ let progressBar = document.getElementById("progress-bar");
 
 const dropArea = document.getElementById("drop-area");
 
-const preventDefaults = e => {
+function preventDefaults(e){
   e.preventDefault();
   e.stopPropagation();
-};
+}
 
-const highlight = e => {
+function highlight(e){
   dropArea.classList.add("highlight");
-};
+}
 
-const unhighlight = e => {
+function unhighlight(e){
   dropArea.classList.remove("highlight");
-};
+}
 
-const handleDrop = e => {
+function handleDrop(e){
   // shorthand version
   // ([...e.dataTransfer.files]).forEach((file)=>{console.log("file...",file)});
 
@@ -94,16 +110,20 @@ const handleDrop = e => {
   const files = dt.files;
 
   handleFiles(files);
-};
+}
 
-const handleFiles = files => {
-  const filesArray = [...files];
-  initializeProgress(filesArray.length);
-  filesArray.forEach(uploadFile);
-};
+function handleFiles(files){
+  console.log(files);
+  if (validateFile(files)){
+    const filesArray = [...files];
+    console.log(files);
+    initializeProgress(filesArray.length);
+    filesArray.forEach(uploadFile);
+  }
+}
 
 
-const uploadFile = (file, i) => {
+function uploadFile(file, i) {
   const url = "../";
   let xhr = new XMLHttpRequest();
   let formData = new FormData();
@@ -130,7 +150,7 @@ const uploadFile = (file, i) => {
 
   formData.append("file", file);
   xhr.send(formData);
-};
+}
 
 ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
   dropArea.addEventListener(eventName, preventDefaults, false);
@@ -145,22 +165,23 @@ const uploadFile = (file, i) => {
 dropArea.addEventListener("drop", handleDrop, false);
 
 
-const initializeProgress = numFiles => {
+function initializeProgress(numFiles){
   console.log("entra", numFiles);
+  progressBar.style.display = "block";
   progressBar.value = 0;
   uploadProgress = [];
 
   for (let i = numFiles; i > 0; i--) {
     uploadProgress.push(0);
   }
-};
+}
 
-const updateProgress = (fileNumber, percent) => {
+function updateProgress(fileNumber, percent){
   console.log('progress', fileNumber, percent)
   let total;
   uploadProgress[fileNumber] = percent;
   total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length;
   progressBar.value = total;
-};
+}
 
 // TODO : PLAYLISTS + MP4

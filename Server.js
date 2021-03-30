@@ -154,17 +154,21 @@ var formidable = require('formidable'); //npm install formidable
 
 app.post('/', function (req, res){
     var form = new formidable.IncomingForm();
-
+    form.maxFileSize = 20*1024*1024; // 20 MB
     form.parse(req);
 
     form.on('fileBegin', function (name, file){
-        file.path = __dirname + '/public/songs/' + file.name;
+        if(path.extname(file.name) == ".mp3"){
+            file.path = __dirname + '/public/songs/' + file.name;
+        }
     });
 
     form.on('file', function (name, file){
-        console.log('Uploaded ' + file.name);
-        fil = [];
-        crawl(dir);
+        if(path.extname(file.name) == ".mp3"){
+            console.log('Uploaded ' + file.name);
+            fil = [];
+            crawl(dir);
+        }
     });
 
     res.status(200);

@@ -83,7 +83,7 @@ table#other_titles tr:hover {
   padding: 20px;
 }
 #drop-area.highlight {
-  border-color: purple;
+  border-color: #000;
 }
 
 p {
@@ -112,6 +112,7 @@ p#formError {
   display: block;
 margin: 1rem auto 0;
 width: 60%;
+display: none;
 }
 
 
@@ -126,9 +127,12 @@ width: 60%;
 }
 
 .button:hover {
-  background: #ddd;
+  background: #100f0f;
 }
 
 #fileElem {
   display: none;
+}
+.table{
+  margin-bottom: -1px;
 }
