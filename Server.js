@@ -73,8 +73,8 @@ function push_to_fil(next, type, artist, title, picture, duration){
         title = path_name_split[1];
     }
 
-
-    fil.push({"type":type,"artist":artist,"title":title,"path":"/songs/"+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)});
+    var elem = {"type":type,"artist":artist,"title":title,"path":"/songs/"+file,"time":ms_to_minutes(duration),"cover":image_from_arr(picture)};
+    fil.push(elem);
     write_JSON();
 }
 
@@ -111,14 +111,10 @@ function crawl(dir){
             }
             else {
                 var ext = path.extname(next); // extension of the file
-                file_name = path.parse(next).name; // name of the file without extension
-                file = path.parse(next).base // name + extension
-
-                path_name_split = file_name.split(" - ");
 
                 if (ext=='.mp3'){
-                    buffer = fs.readFileSync(next)
-                    duration = getMP3Duration(buffer)                    
+                    buffer = fs.readFileSync(next);
+                    duration = getMP3Duration(buffer);                
                     get_tags(next, "audio", duration, push_to_fil);
                 }
 
@@ -164,13 +160,28 @@ app.post('/', function (req, res){
     });
 
     form.on('file', function (name, file){
+        next = path.join(dir,"/public/songs/"+file.name);
+
         if(path.extname(file.name) == ".mp3"){
-            console.log('Uploaded ' + file.name);
-            fil = [];
-            crawl(dir);
+            var exists = false;
+            for (var i=0; i<fil.length; i++) {
+                if(fil[i].path == "/songs/"+file.name){
+                    exists = true
+                }
+            }
+            if(!exists){
+                console.log('Uploaded ' + file.name);
+                var ext = path.extname(file.name); // extension of the file
+
+                buffer = fs.readFileSync(next);
+                duration = getMP3Duration(buffer);
+
+                get_tags(next, "audio", duration, push_to_fil);
+            }
         }
     });
 
+    
     res.status(200);
 });
 
