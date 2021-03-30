@@ -1,5 +1,7 @@
 var data_music;
 var data_video;
+var title = document.getElementById("title");
+var artist = document.getElementById("artist");
 
 //function returns the file without the extension
 function extract_name(path){
@@ -36,6 +38,7 @@ function escapeHtml(str)
 //
 function play_music(index){
     music = data_music[index];
+    console.log(music);
     title.innerText = music["title"];
     artist.innerText = music["artist"];
 

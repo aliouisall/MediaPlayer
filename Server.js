@@ -23,11 +23,72 @@ function millisToMinutesAndSeconds(millis) {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
+// Function to show cover from mp3 file
+function show_image_from_arr(){
+    var base64String = "";
+    for (var i = 0; i < image.data.length; i++) {
+        base64String += String.fromCharCode(image.data[i]);
+    }
+    var dataUrl = "data:" + image.format + ";base64," + window.btoa(base64String);
+}
+
+//
+var fil = [];
+var artist = "";
+var title = "";
+//var type = "";
+var cover = "";
+var chemin_music = "/songs/";
+var file = "";
+//function to 
+function get_tags(next, type, duration, callback){
+    jsmediatags.read(next, {
+        onSuccess: function(tag) {
+            callback(next, type, tag.tags.artist, tag.tags.title, duration);
+        },
+        onError: function(error) {
+          console.log(':(', error.type, error.info);
+        }
+
+    });
+}
+//
+function push_to_fil(next, type, artist, title, duration){
+    file_name = path.parse(next).name; // name of the file without extension
+    file = path.parse(next).base // name + extension
+    path_name_split = file_name.split(" - ");
+
+    if(artist == undefined){
+        artist = path_name_split[0];
+    }
+    if(title == undefined){
+        title = path_name_split[1];
+    }
+
+    var minutes = Math.floor(duration / 60000);
+    var seconds = ((duration % 60000) / 1000).toFixed(0);
+    duration_ = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":duration_,"cover":""});
+    write_JSON();
+}
+
+function write_JSON(){
+    let donnees = JSON.stringify(fil);
+    fs.writeFile('playlist.json', '', function(erreur) {
+        if (erreur) {
+            console.log(erreur)}
+        }
+    );
+    fs.writeFile('playlist.json', donnees, function(erreur) {
+        if (erreur) {
+            console.log(erreur)}
+        }
+    );
+}
+
 // Extraction des vidéos et audios qui existent dans le serveur et stockage de leurs noms dans un fichier JSON
 
-var j=0;
-var fil = [];
-var chemin_music = "/songs/";
 function crawl(dir){
 
 	var files = fs.readdirSync(dir);
@@ -44,7 +105,6 @@ function crawl(dir){
 
             }
             else {
-                
                 var ext = path.extname(next); // extension of the file
                 file_name = path.parse(next).name; // name of the file without extension
                 file = path.parse(next).base // name + extension
@@ -52,29 +112,9 @@ function crawl(dir){
                 path_name_split = file_name.split(" - ");
 
                 if (ext=='.mp3'){
-
-                    artist = path_name_split[0];
-                    title = path_name_split[1];
-                    type = "audio";
-                    cover = "";
-
-                    jsmediatags.read(next, {
-                        onSuccess: function(tag) {
-                            artist = tag.tags.artist;
-                            title = tag.tags.title;
-                            console.log(tag.tags.artist);
-                            type = "audio";
-                            cover = "";
-                        }
-                    });
                     buffer = fs.readFileSync(next)
-                    duration = getMP3Duration(buffer)
-                    
-
-                    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
-                    
-                    j+=1;
-                
+                    duration = getMP3Duration(buffer)                    
+                    get_tags(next, "audio", duration, push_to_fil);
                 }
 
             }
@@ -88,18 +128,20 @@ function crawl(dir){
 
     }
 
-    let donnees = JSON.stringify(fil);
-    fs.writeFile('playlist.json', donnees, function(erreur) {
-        if (erreur) {
-            console.log(erreur)}
-        }
-    );
+    
 
     //console.log(fil);
 }
 
 dir = __dirname + chemin_music;
 crawl(dir);
+
+// function returns information about the file
+function fetch_info(tag,fil){
+    artist = tag.tags.artist;
+    title = tag.tags.title;
+    fil.push({"type":type,"artist":artist,"title":title,"path":chemin_music+file,"time":millisToMinutesAndSeconds(duration),"cover":""});
+}
 
 // Accès au dossier public et affichage du contenu de index.html
 
