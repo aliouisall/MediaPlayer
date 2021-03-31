@@ -63,6 +63,7 @@ function play_music(index,elem){
     source.src = music["path"];
 
     audio.load(); //to just preload the audio without playing
+    audio.play(); //to play the song right away
 }
 
 // function to activate repeat feature
