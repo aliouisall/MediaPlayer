@@ -3,7 +3,7 @@ var app = express();
 var fs = require('fs');
 var path = require('path');
 var jsmediatags = require('jsmediatags') // npm install jsmediatags --save   // https://github.com/aadsm/JavaScript-ID3-Reader
-getMP3Duration = require('get-mp3-duration') // npm install --save get-mp3-duration
+var getMP3Duration = require('get-mp3-duration') // npm install --save get-mp3-duration
 
 
 // Extraction du nom d'un fichier. On élémine toutes les \ avant le nom fu fichier
